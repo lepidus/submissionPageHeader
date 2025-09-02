@@ -6,7 +6,7 @@ This plugin adds changes to the header of the submissions page at the applicatio
 
 The latest release of this plugin is compatible with the following PKP applications:
 
-* OPS 3.3.0
+* OPS 3.4.0
 
 ## Plugin Download
 

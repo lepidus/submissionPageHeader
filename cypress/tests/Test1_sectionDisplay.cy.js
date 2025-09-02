@@ -21,8 +21,8 @@ describe("Better display of preprints's section", function () {
 		
 		cy.contains('a', 'Create Section').click();
 		cy.wait(1000);
-		cy.get('input[id^="title-en_US-"').type('High Fantasy', { delay: 0 });
-		cy.get('input[id^="abbrev-en_US-"').type('hiFantasy', { delay: 0 });
+		cy.get('input[id^="title-en"').type('High Fantasy', { delay: 0 });
+		cy.get('input[id^="abbrev-en"').type('hiFantasy', { delay: 0 });
 		cy.get('input[id^="path"').type('hiFantasy', { delay: 0 });
 		cy.get('#sectionForm button.submitFormButton').click();
 		cy.wait(2000);
