@@ -12,7 +12,12 @@
  *
  */
 
-import('lib.pkp.classes.plugins.GenericPlugin');
+namespace APP\plugins\generic\submissionPageHeader;
+
+use PKP\plugins\GenericPlugin;
+use APP\core\Application;
+use APP\facades\Repo;
+use PKP\plugins\Hook;
 
 class SubmissionPageHeaderPlugin extends GenericPlugin
 {
@@ -20,9 +25,13 @@ class SubmissionPageHeaderPlugin extends GenericPlugin
     {
         $success = parent::register($category, $path, $mainContextId);
 
+        if (Application::isUnderMaintenance()) {
+            return true;
+        }
+
         if ($success && $this->getEnabled($mainContextId)) {
-            HookRegistry::register('TemplateManager::display', [$this, 'loadResourcesToWorkflow']);
-            HookRegistry::register('Template::Workflow', [$this, 'addWorkflowModifications']);
+            Hook::add('TemplateManager::display', [$this, 'loadResourcesToWorkflow']);
+            Hook::add('Template::Workflow', [$this, 'addWorkflowModifications']);
         }
 
         return $success;
@@ -55,8 +64,7 @@ class SubmissionPageHeaderPlugin extends GenericPlugin
         $submission = $templateMgr->getTemplateVars('submission');
         $publication = $submission->getCurrentPublication();
 
-        $sectionDao = DAORegistry::getDAO('SectionDAO');
-        $section = $sectionDao->getById($publication->getData('sectionId'));
+        $section = Repo::section()->get($publication->getData('sectionId'));
         $templateMgr->assign('submissionSection', $section->getLocalizedTitle());
 
         $templateMgr->registerFilter("output", [$this, 'addSectionViewerFilter']);
